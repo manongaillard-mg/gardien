@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gardien</title>
+  <!-- Shared by link only, not officially published: asks search engines not to list it -->
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/png" href="images/icon-180.png">
+  <link rel="apple-touch-icon" href="images/icon-180.png">
+  <meta name="theme-color" content="#fffbe6">
+  <!-- Preview card when the link is sent in a message -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://manongaillard-mg.github.io/gardien/">
+  <meta property="og:title" content="Gardien">
+  <meta property="og:description" content="Five curious minutes about you, a postcard for today, a moment for gratitude. Everything stays on your device.">
+  <meta property="og:image" content="https://manongaillard-mg.github.io/gardien/images/icon-180.png">
+  <meta name="twitter:card" content="summary">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- The illustrated background, one per part of the app (style.css) -->
+  <div class="backdrop" aria-hidden="true"></div>
+
+  <!-- The big cream card: the logo "gardien." at the top, then the screen -->
+  <div class="sheet">
+    <header class="top">
+      <p class="brand"><img src="images/logo.png" alt=""><span>gardien.</span></p>
+    </header>
+    <main id="screen" class="screen" aria-live="polite"></main>
+  </div>
+
+  <footer class="care">
+    <details>
+      <summary id="care-link"></summary>
+      <p id="care-text"></p>
+    </details>
+  </footer>
+
+  <script src="content/session-01.js"></script>
+  <script src="content/app-text.js"></script>
+  <script src="content/theme-joy.js"></script>
+  <script src="content/theme-here.js"></script>
+  <script src="art.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

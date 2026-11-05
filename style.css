@@ -1,0 +1,541 @@
+/* Gardien — illustrated backgrounds, one big cream card with rounded corners,
+   the sun logo + "gardien.", Space Mono everywhere, soft cream frames, mustard buttons,
+   the care note on an orange strip. Phone first. */
+
+@font-face {
+  font-family: "Space Mono";
+  src: url("fonts/SpaceMono-Regular.ttf") format("truetype");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Space Mono";
+  src: url("fonts/SpaceMono-Bold.ttf") format("truetype");
+  font-weight: 700;
+}
+
+:root {
+  /* Palette — structure: cream and mustard */
+  --cream: #fffbe6;
+  --strip: #fdf0d0;
+  --mustard: #f2b544;
+  --white: #ffffff;
+  --ink: #1d1a17;
+  --soft: #5f574d;
+  --line: rgba(29, 26, 23, 0.2);
+
+  /* Palette — decorations, dark tones */
+  --dark-green: #1c3a24;
+  --brown-red: #76291e;
+  --purple: #7150a0;
+  --blue: #2f55a0;
+
+  /* Palette — decorations, light tones */
+  --yellow: #fdd800;
+  --green: #8db85a;
+  --red: #e8452a;
+  --mint: #86c9bd;
+
+  --text-font: "Space Mono", ui-monospace, Menlo, monospace;
+  --radius: 1.4rem;
+
+  --background: url("images/backgrounds/background1.webp");
+}
+
+/* One background per part of the app */
+body[data-part="start"]      { --background: url("images/backgrounds/background1.webp"); }
+body[data-part="menu"]       { --background: url("images/backgrounds/background3.webp"); }
+body[data-part="cup"],
+body[data-part="questions"],
+body[data-part="guardian"],
+body[data-part="experiment"],
+body[data-part="closing"]    { --background: url("images/backgrounds/background2.webp"); }
+body[data-part="gratitude"],
+body[data-part="special"]    { --background: url("images/backgrounds/background4.webp"); }
+body[data-part="notebook"]   { --background: url("images/backgrounds/background7.webp"); }
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background-color: #fdf1d6;
+  color: var(--ink);
+  font-family: var(--text-font);
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+/* The illustrated background stays still behind the card while the page scrolls */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background-color: #fdf1d6;
+  background-image: var(--background);
+  background-size: cover;
+  background-position: center top;
+}
+
+/* On wide screens (computer), the coloured background is shown once, in the middle, behind the
+   cream card, at the screen height; on the left and right, a plain cream paper,
+   so the background stays calm on a large screen. Phones do not change. */
+@media (min-aspect-ratio: 4/5) {
+  .backdrop {
+    background-image: var(--background), url("images/backgrounds/background-creme.jpg");
+    background-size: auto 100%, auto 100%;
+    background-repeat: no-repeat, repeat-x;
+    background-position: center top, center top;
+  }
+}
+
+/* --- The big cream card --- */
+
+.sheet {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  width: calc(100% - 2.4rem);
+  max-width: 34rem;
+  margin: 2.2rem auto 0;
+  padding: 1.6rem 1.4rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+  background: var(--cream);
+  border-radius: var(--radius);
+}
+
+/* Logo: the sun and "gardien." */
+.top { display: flex; justify-content: center; }
+
+.brand {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-size: 2rem;
+  line-height: 1;
+  letter-spacing: 0.01em;
+}
+
+.brand img { width: 2.6rem; height: auto; display: block; }
+
+/* First screen (the name): one smaller cream card in the middle, with the big logo inside,
+   so the logo never sits on a busy part of the background */
+body[data-part="start"] .sheet {
+  flex: none;
+  margin: auto auto;
+  padding: 2rem 1.4rem 2rem;
+  gap: 1.6rem;
+}
+
+body[data-part="start"] .brand {
+  flex-direction: column;
+  gap: 0.7rem;
+  font-size: 2.4rem;
+}
+
+body[data-part="start"] .brand img { width: 5rem; }
+
+/* --- Screen --- */
+
+.screen {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.3rem;
+}
+
+.screen p { margin: 0; }
+
+.question {
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.theme-title { font-weight: 700; }
+
+.guardian-name {
+  font-weight: 700;
+  color: var(--brown-red);
+}
+
+/* --- Buttons: mustard, rounded --- */
+
+.button {
+  align-self: flex-start;
+  padding: 0.6rem 1.3rem;
+  border: none;
+  border-radius: 999px;
+  background: var(--mustard);
+  color: var(--ink);
+  font-family: var(--text-font);
+  font-size: 0.92rem;
+  cursor: pointer;
+}
+
+.button:hover,
+.button:focus-visible { background: #e9a832; }
+
+.button.secondary {
+  background: transparent;
+  box-shadow: inset 0 0 0 2px var(--mustard);
+}
+
+.button.secondary:hover,
+.button.secondary:focus-visible { background: rgba(242, 181, 68, 0.18); }
+
+.button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+/* Small light sky-blue buttons, e.g. the code and "Delete everything" in the notebook */
+.button.small {
+  padding: 0.4rem 0.95rem;
+  font-size: 0.78rem;
+}
+
+.button.sky { background: #cfe6f7; }
+
+.button.sky:hover,
+.button.sky:focus-visible { background: #b6d8f1; }
+
+/* --- Progress: small squares --- */
+
+.progress {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.dot {
+  width: 0.7rem;
+  height: 0.7rem;
+  background: var(--line);
+}
+
+.dot.current { background: var(--red); }
+
+/* --- Choices: cream frames with rounded corners --- */
+
+.choices {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.choice {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.8rem 1rem;
+  border: none;
+  border-radius: 0.9rem;
+  background: var(--strip);
+  color: var(--ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.choice:hover:not(:disabled) { box-shadow: inset 0 0 0 2px var(--mustard); }
+.choice:disabled { cursor: default; opacity: 0.5; }
+.choice.picked { opacity: 1; background: var(--mustard); }
+
+.card strong { font-weight: 700; }
+
+/* The dashed frame is a border (not an outline) so it follows the rounded corners */
+.choice.optional {
+  background: transparent;
+  box-shadow: none;
+  border: 2px dashed var(--line);
+  color: var(--soft);
+}
+
+.choice.optional.picked { background: var(--mustard); color: var(--ink); }
+
+.reply,
+.guardian-says { font-style: italic; }
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+}
+
+/* --- Free text: white boxes --- */
+
+.deeper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.deeper textarea,
+.deeper input,
+.choices input {
+  width: 100%;
+  padding: 0.7rem;
+  border: 1px solid var(--line);
+  border-radius: 0.9rem;
+  background: var(--white);
+  color: var(--ink);
+  font-family: var(--text-font);
+  font-size: 1rem;
+  resize: vertical;
+}
+
+.deeper textarea:focus,
+.deeper input:focus,
+.choices input:focus {
+  outline: none;
+  border-color: var(--mustard);
+  box-shadow: 0 0 0 2px var(--mustard);
+}
+
+.hint {
+  color: var(--soft);
+  font-size: 0.8rem;
+  font-style: italic;
+}
+
+.note {
+  color: var(--soft);
+  font-style: italic;
+}
+
+/* --- Notebook --- */
+
+/* Each entry: a cream strip with a small arrow (down = closed, up = open), then a white area */
+/* One rounded frame: the cream strip and the white area together */
+.entry { background: var(--white); border-radius: 0.9rem; overflow: hidden; }
+
+.entry summary {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.7rem 1rem;
+  background: var(--strip);
+  font-size: 0.85rem;
+  list-style: none;
+  cursor: pointer;
+}
+
+.entry summary::-webkit-details-marker { display: none; }
+
+.entry summary::before {
+  content: "";
+  flex: none;
+  width: 0.45rem;
+  height: 0.45rem;
+  margin-top: -0.25rem;
+  border-right: 2px solid var(--ink);
+  border-bottom: 2px solid var(--ink);
+  transform: rotate(45deg);
+}
+
+.entry[open] summary::before { margin-top: 0.25rem; transform: rotate(-135deg); }
+
+.entry-body { padding: 0.7rem 1rem 1rem; }
+
+.entry-theme { font-weight: 700; }
+
+.entry-part { padding: 0.5rem 0; }
+.entry-part + .entry-part { border-top: 1px solid var(--line); }
+
+.entry-part h3 {
+  margin: 0 0 0.2rem;
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: var(--soft);
+}
+
+.entry-part p { margin: 0; }
+
+.written {
+  font-style: italic;
+  color: var(--soft);
+}
+
+/* Discreet text button, e.g. deleting the notebook */
+.link-button {
+  align-self: flex-start;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--soft);
+  font-family: var(--text-font);
+  font-size: 0.8rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* --- Care note, on every screen, on an orange strip under the card --- */
+
+.care {
+  position: relative;
+  z-index: 1;
+  width: calc(100% - 2.4rem);
+  max-width: 34rem;
+  margin: 0.5rem auto 1rem;
+  font-size: 0.62rem;
+  font-style: italic;
+  color: var(--ink);
+}
+
+.care details {
+  padding: 0.3rem 0.6rem;
+  background: var(--mustard);
+  border-radius: 0.6rem;
+}
+
+.care summary { cursor: pointer; }
+
+.care p { margin: 0.4rem 0 0.2rem; font-size: 0.72rem; font-style: normal; cursor: pointer; }
+
+/* --- Menu --- */
+
+.menu-line {
+  display: block;
+  color: var(--soft);
+  font-size: 0.8rem;
+}
+
+.menu-choice { padding: 0.8rem 1rem; }
+.menu-icon { flex: none; width: 2.2rem; height: 2.2rem; }
+.menu-icon svg { display: block; width: 100%; height: 100%; }
+
+/* --- 4-digit code --- */
+
+.code-box {
+  width: 9rem;
+  padding: 0.7rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 0.9rem;
+  background: var(--white);
+  color: var(--ink);
+  font-family: var(--text-font);
+  font-size: 1.5rem;
+  letter-spacing: 0.4em;
+  text-align: center;
+}
+
+.code-box:focus { outline: none; border-color: var(--mustard); box-shadow: 0 0 0 2px var(--mustard); }
+
+.problem {
+  color: var(--brown-red);
+  font-weight: 700;
+}
+
+/* Notebook: the small buttons side by side (on two lines on a narrow phone if needed) */
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+/* --- Today's special --- */
+
+/* Rounded corners on the postcard too, on screen and in the notebook */
+.postcard { position: relative; border-radius: 0.9rem; overflow: hidden; }
+.postcard svg { display: block; width: 100%; height: auto; }
+.postcard.small { max-width: 20rem; margin-top: 0.4rem; }
+
+/* The postcard being made: stickers can be moved and resized */
+.postcard.editable { touch-action: pan-y; user-select: none; -webkit-user-select: none; }
+.postcard.editable .sticker { cursor: grab; }
+.postcard.editable .sticker:active { cursor: grabbing; }
+.frame-line { fill: none; stroke: var(--ink); stroke-width: 1.2; stroke-dasharray: 4 3; }
+.frame-corner { fill: var(--white); stroke: var(--ink); stroke-width: 1.2; cursor: nwse-resize; }
+.frame-turn { fill: var(--white); stroke: var(--ink); stroke-width: 1.2; cursor: grab; }
+.frame-turn:active { cursor: grabbing; }
+
+.special-row h3 {
+  margin: 0 0 0.5rem;
+  font-weight: 400;
+  font-size: 0.9rem;
+}
+
+.special-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.swatch {
+  width: 2.2rem;
+  height: 2.2rem;
+  border: none;
+  border-radius: 0.6rem;
+  background-size: cover;
+  background-position: center;
+  cursor: pointer;
+}
+
+/* The cream paper needs a thin line to show on the cream card */
+.swatch[data-background="cream"] { box-shadow: inset 0 0 0 1px var(--line); }
+
+.chip {
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--white);
+  color: var(--ink);
+  font-family: var(--text-font);
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+/* Each sticker in a thin dark brown circle */
+.sticker-choice {
+  width: 3.6rem;
+  height: 3.6rem;
+  padding: 0.4rem;
+  border: 1px solid rgba(74, 46, 30, 0.45);
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+}
+
+/* All the stickers together in one cream frame */
+.sticker-tray {
+  gap: 0.6rem;
+  padding: 1rem 0.8rem;
+  border-radius: 1.4rem;
+  background: var(--strip);
+}
+
+.sticker-choice img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.sticker-choice:disabled { opacity: 0.35; cursor: default; }
+
+.swatch[aria-pressed="true"],
+.chip[aria-pressed="true"],
+.sticker-choice[aria-pressed="true"] {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.chip[aria-pressed="true"],
+.sticker-choice[aria-pressed="true"] { background: var(--mustard); }
+
+/* --- Symmetric pages ---
+   Every frame and button is centred in the page; text stays left-aligned.
+   All of it is in this block, so it can be changed in one place. */
+
+.button,
+.link-button { align-self: center; }
+
+.actions,
+.links,
+.progress,
+.special-buttons { justify-content: center; }
+
+.code-box { align-self: center; }
+
+.postcard.small { margin-left: auto; margin-right: auto; }
